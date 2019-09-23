@@ -122,6 +122,9 @@ def recreate_instance(instance):
         )
         if describe_images_response['Images'][0]['State'] == 'available':
             break
+        elif describe_images_response['Images'][0]['State'] == 'failed':
+            raise Exception ('AMI Creation failed')
+            return
 
         print(bcolors.WARNING + "Waiting for AMI creation: %s" % image_id)
         sleep(5)
@@ -270,6 +273,7 @@ def recreate_instance(instance):
 
     print(bcolors.OKGREEN + "Hooray!! new instance is running: %s" % new_instance_id)
     
+
 def wait_instance_ready(instance_id, desired_status):
     while True:
         print(bcolors.WARNING + "Now waiting for status: %s of instance: %s " % (desired_status, instance_id))
