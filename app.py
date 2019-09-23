@@ -375,7 +375,7 @@ def main():
     parser.add_argument('--launch-only', nargs='*', default=False,
                         help='Launch without detaching/re-attaching EBS volumes')
     parser.add_argument('--dry-run', default=False,
-                        help='Tenancy of new created EC2 instance(s)')
+                        help='Option of dry run, not tested yet...')
     args = parser.parse_args()    
     
     global dry_run
