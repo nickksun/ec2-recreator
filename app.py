@@ -246,6 +246,7 @@ def recreate_instance(instance):
     new_volumes_result = detach_volumes(new_instance_id)
     print(bcolors.OKGREEN + "Detached volumes from new instance: %s" % new_instance_id)
 
+    ### Attach volumes from source instance to new instance    
     print(bcolors.WARNING + "Attaching volumes to new instance: %s" % new_instance_id)
     attach_volumes(source_volumes_result, new_instance_id)
     print(bcolors.OKGREEN + "Attached volumes to new instance: %s" % new_instance_id)
