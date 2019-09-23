@@ -35,7 +35,6 @@ def recreate_instance(instance):
     global launch_only
 
     source_instance_id = instance['InstanceId']
-    # source_instance_id = 'i-002057cc5e05b82d0' # TODO delete
     root_volume_id = ''
     block_device_mappings  = []
     for block_device in instance['BlockDeviceMappings']:
@@ -265,7 +264,7 @@ def recreate_instance(instance):
     
     wait_instance_ready(new_instance_id, 'running')
 
-    
+    print(bcolors.OKGREEN + "Hooray!! new instance is running: %s" % new_instance_id)
     
     ## TODO: Add code to DELETE(??) new EBS volumes those detached from new launched instance
 
@@ -281,7 +280,7 @@ def wait_instance_ready(instance_id, desired_status):
         )
         ready = True
         for instance in describe_instances_response['Reservations'][0]['Instances']:
-            if instance['State']['Name'] != desired_status:
+            if instance['State']['Name'] is not desired_status:
                 ready = False
         if ready:
             break
