@@ -285,15 +285,15 @@ def wait_instance_ready(instance_id, desired_status):
         )
         ready = True
         for instance in describe_instances_response['Reservations'][0]['Instances']:
-            if instance['State']['Name'] is not desired_status:
+            if instance['State']['Name'] != desired_status:
                 ready = False
         if ready:
-            break
+            return
         sleep(5)
 
 def delete_volumes(volumes_result):
     for volume in volumes_result:
-        print(bcolors.WARNING + "Deleting volumes: " % volume['volume_id'])
+        print(bcolors.WARNING + "Deleting volumes: %s " % volume['volume_id'])
         ec2_client.delete_volumes(
             VolumeId=volume['volume_id'],
             DryRun=dry_run
