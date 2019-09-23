@@ -251,6 +251,9 @@ def recreate_instance(instance):
     attach_volumes(source_volumes_result, new_instance_id)
     print(bcolors.OKGREEN + "Attached volumes to new instance: %s" % new_instance_id)
 
+    ### Delete newly created volumes
+    print(bcolors.WARNING + "Delete newly created volumes")
+    delete_volumes(new_volumes_result)
 
     ### Start new instance
     
@@ -267,9 +270,6 @@ def recreate_instance(instance):
 
     print(bcolors.OKGREEN + "Hooray!! new instance is running: %s" % new_instance_id)
     
-    ## TODO: Add code to DELETE(??) new EBS volumes those detached from new launched instance
-
-
 def wait_instance_ready(instance_id, desired_status):
     while True:
         print(bcolors.WARNING + "Now waiting for status: %s of instance: %s " % (desired_status, instance_id))
@@ -286,6 +286,14 @@ def wait_instance_ready(instance_id, desired_status):
         if ready:
             break
         sleep(5)
+
+def delete_volumes(volumes_result):
+    for volume in volumes_result:
+        print(bcolors.WARNING + "Deleting volumes: " % volume['volume_id'])
+        ec2_client.delete_volumes(
+            VolumeId=volume['volume_id'],
+            DryRun=dry_run
+        )
 
 def attach_volumes(volumes_result, instance_id):
     print(bcolors.WARNING + "Attaching volumes to: %s" % instance_id)
